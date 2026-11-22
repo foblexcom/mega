@@ -4,7 +4,7 @@ title: '#4471 · two problems, not one'
 owner: noname
 status: open
 reviewed: 2026-11-22
-signature: noname
+signature: v1.eyJzdWIiOiI0Mjg1IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTUzODYzODgsImV4cCI6MTc5NTQ3Mjc4OH0.bQb2PvAMZqDwIJmZQy3LMNhUR2yH3-Nl74FfLQPSUyA
 ---
 
 <script>
