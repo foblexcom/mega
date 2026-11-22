@@ -3,13 +3,13 @@
   import notes from '#lib/data/desk-notes.json';
   import { uniqueById, type Report } from '#lib/kb/causes';
   import { tenantOf } from '#lib/kb/locales';
-  import { splitTicket } from '#lib/kb/split';
+  import { problemRows } from '#lib/kb/split';
 
   let { ticket }: { ticket: number } = $props();
 
   const rows = $derived((reports as Report[]).length);
   const unique = $derived(uniqueById(reports as Report[]).filter((r) => r.mergedInto === ticket).length);
-  const groups = $derived(splitTicket(reports as Report[], ticket, tenantOf, notes.oneDayMove));
+  const problems = $derived(problemRows(reports as Report[], ticket, tenantOf, notes.oneDayMove));
   const tags = (g: { taggedAs: Record<string, number> }) =>
     Object.entries(g.taggedAs)
       .sort((a, b) => b[1] - a[1])
@@ -19,7 +19,7 @@
 
 <p class="sum">
   <strong>{unique}</strong> reports in #{ticket} ({rows} rows exported, {rows - unique} of them repeats) ·
-  <strong>{groups.length}</strong> problems
+  <strong>{problems.length}</strong> problems
 </p>
 
 <table>
@@ -27,19 +27,26 @@
     <tr><th>problem</th><th>reports</th><th>tagged as</th><th>tenants</th><th>seen</th></tr>
   </thead>
   <tbody>
-    {#each groups as g (g.problem)}
+    {#each problems as p (p.problem)}
       <tr>
-        <td><code>{g.problem}</code></td>
-        <td>{g.reports.length}</td>
-        <td class="tags">{tags(g)}</td>
-        <td>{g.tenants}</td>
-        <td>{g.firstSeen} → {g.lastSeen}</td>
+        <td><code>{p.problem}</code></td>
+        <td>{p.count}</td>
+        <td class="tags">{tags(p)}</td>
+        <td>{p.tenants}</td>
+        <td>{p.firstSeen} → {p.lastSeen}</td>
       </tr>
     {/each}
   </tbody>
 </table>
 
+{#each problems as p (p.problem)}
+  {#if p.oneDayMove}
+    <p class="note">{p.oneDayMove} of the <code>{p.problem}</code> reports read as a one-day move; they are counted here, where they are filed.</p>
+  {/if}
+{/each}
+
 <style>
   .sum { font-size: 1.1rem; }
   .tags { color: var(--muted); font-size: 0.85em; }
+  .note { color: var(--muted); font-size: 0.85em; }
 </style>

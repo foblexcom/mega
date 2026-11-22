@@ -1,6 +1,6 @@
 ---
 layout: runbook
-title: '#4471 · three problems, not one'
+title: '#4471 · two problems, not one'
 owner: noname
 status: open
 reviewed: 2026-11-22
@@ -14,10 +14,10 @@ signature: noname
 </script>
 
 [Incident #4471](/kb/incidents/4471) was merged as one issue with one fix queued. Read one by one,
-the reports show three different problems. Each has its own cause and needs its own ticket.
+the reports show two different problems. Each has its own cause and needs its own ticket.
 
 <Callout kind="warn">
-Not one bug reported many times. Three bugs that look alike, because a date comes out wrong.
+Not one bug reported many times. Two bugs that look alike, because a date comes out wrong.
 </Callout>
 
 ## What the reports say
@@ -26,22 +26,24 @@ Not one bug reported many times. Three bugs that look alike, because a date come
 
 The export repeats some rows, so every count here is by unique report id.
 
-## The three problems
+## The two problems
 
 - **parser** ([issue](https://github.com/foblexcom/mega/issues/1)): the shared parser reads every date month first, and our tenants write the day first. A booking for 7 April comes out as 4 July. This is the large one, and the queued fix covers only this one.
 - **hint** ([issue](https://github.com/foblexcom/mega/issues/2)): the booking-v3 form prints a month-first hint under the date field. People at day-first tenants type what the hint says, and the form reads it day first. The date is swapped here too, but the fix is in the form, not in the parser.
-- **clock** ([issue](https://github.com/foblexcom/mega/issues/3)): the date is one day off, not swapped. These reports talk about one month only, an invite that came before the booking, one meeting that landed on two different days. That reads like time zones, not like day and month order.
 
 ## Why one ticket hid them
 
-The intake tag is a guess from the reporter's browser. In the table, every problem carries tags
-that name another problem. The desk also filed the one-day reports under `parser` by tenant and
-footnoted them. Merging by subject line ([decision 0001](/kb/decisions/0001-dedupe-by-subject))
-could not tell these apart: the subjects match, the causes do not.
+The cause depends on the tenant: where they are, and which booking form they run. The intake tag
+is only a guess from the reporter's browser, and the table shows how often it names the other
+problem. Merging by subject line ([decision 0001](/kb/decisions/0001-dedupe-by-subject)) could not
+tell the two apart: the subjects match, the causes do not.
+
+Some reports read like a one-day move. The desk counts them where they are filed, under their
+tenant's cause, and footnotes them. They do not make a third problem.
 
 ## Lessons
 
 - Count by cause, not by subject. The tenant and the form tell you the cause; the subject and the intake tag do not.
-- A footnote under a count is a second problem waiting for its own ticket.
+- Count a report once, where it is filed, and footnote how it reads.
 
 <RenderStamp {signature} />
